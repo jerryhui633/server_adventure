@@ -30,6 +30,21 @@ public class HttpServer {
 				is = socket.getInputStream();
 				os = socket.getOutputStream();
 
+				Request request = new Request(is);
+				request.parse();
+
+				Response response = new Response(os);
+				response.setRequest(request);
+
+				if (request.getUri().startsWith("/servlet/")) {
+					ServletProcessor processor = new ServletProcessor();
+					processor.process(request, response);
+				} else {
+					StaticSourceProcessor processor = new StaticSourceProcessor();
+					processor.process(request, response);
+				}
+				socket.close();
+				shutdown = request.getUri().equals(SHUTDOWN_COMMAD);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}

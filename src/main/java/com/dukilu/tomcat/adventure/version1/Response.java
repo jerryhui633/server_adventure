@@ -1,5 +1,8 @@
 package com.dukilu.tomcat.adventure.version1;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -28,6 +31,24 @@ public class Response implements ServletResponse {
 
 	public void sendStaticResource() throws IOException {
 		byte[] buffer = new byte[BUFFER_SIZE];
+
+		FileInputStream fis = null;
+		try {
+			File file = new File(Constants.WEB_ROOT, request.getUri());
+			fis = new FileInputStream(file);
+			int ch = -1;
+			while ((ch = fis.read(buffer, 0, BUFFER_SIZE)) != -1) {
+				os.write(buffer, 0, ch);
+			}
+		} catch (FileNotFoundException ex) {
+			String errorMessage = "HTTP/1.1 404 File Not Found\r\n" + "Context-Type: text/html\r\n" + "Context-Length: 23\r\n" + "\r\n"
+					+ "<h1>File Not Found</h1>";
+			os.write(errorMessage.getBytes());
+		} finally {
+			if (fis != null) {
+				fis.close();
+			}
+		}
 	}
 
 	public void flushBuffer() throws IOException {
