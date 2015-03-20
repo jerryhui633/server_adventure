@@ -2,7 +2,6 @@ package com.dukilu.tomcat.adventure.version1;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
 import java.util.Locale;
@@ -12,193 +11,149 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletInputStream;
 import javax.servlet.ServletRequest;
 
-public class Request implements ServletRequest {
+public class RequestFacade implements ServletRequest {
+	private Request request;
 
-	private InputStream is;
-	private String uri;
-
-	public Request(InputStream is) {
-		this.is = is;
-	}
-
-	public void parse() {
-		StringBuffer request = new StringBuffer(2048);
-		int i;
-		byte[] buffer = new byte[2048];
-		try {
-			/*while ((i = is.read(buffer)) != -1) {
-				for (int j = 0; j < i; j++) {
-					request.append((char) buffer[j]);
-				}
-			}*/
-			// just read one time from buffer
-			i = is.read(buffer);
-			for (int j = 0; j < buffer.length; j++) {
-				request.append((char) buffer[j]);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		System.out.println("request string:" + request.toString());
-		uri = parseUri(request.toString());
-	}
-
-	public String parseUri(String requestString) {
-		int index1, index2;
-		index1 = requestString.indexOf(" ");
-		if (index1 != -1) {
-			index2 = requestString.indexOf(" ", index1 + 1);
-			if (index2 > index1) {
-				return requestString.substring(index1 + 1, index2);
-			}
-		}
-		return null;
-	}
-
-	public String getUri() {
-		return uri;
+	public RequestFacade(Request request) {
+		this.request = request;
 	}
 
 	public Object getAttribute(String arg0) {
-
-		return null;
+		return request.getAttribute(arg0);
 	}
 
 	public Enumeration getAttributeNames() {
-
-		return null;
+		return request.getAttributeNames();
 	}
 
 	public String getCharacterEncoding() {
-
-		return null;
+		return request.getCharacterEncoding();
 	}
 
 	public int getContentLength() {
-
-		return 0;
+		return request.getContentLength();
 	}
 
 	public String getContentType() {
 
-		return null;
+		return request.getContentType();
 	}
 
 	public ServletInputStream getInputStream() throws IOException {
 
-		return null;
+		return request.getInputStream();
 	}
 
 	public String getLocalAddr() {
 
-		return null;
+		return request.getLocalAddr();
 	}
 
 	public String getLocalName() {
 
-		return null;
+		return request.getLocalName();
 	}
 
 	public int getLocalPort() {
 
-		return 0;
+		return request.getLocalPort();
 	}
 
 	public Locale getLocale() {
 
-		return null;
+		return request.getLocale();
 	}
 
 	public Enumeration getLocales() {
 
-		return null;
+		return request.getLocales();
 	}
 
 	public String getParameter(String arg0) {
 
-		return null;
+		return request.getParameter(arg0);
 	}
 
 	public Map getParameterMap() {
 
-		return null;
+		return request.getParameterMap();
 	}
 
 	public Enumeration getParameterNames() {
 
-		return null;
+		return request.getParameterNames();
 	}
 
 	public String[] getParameterValues(String arg0) {
 
-		return null;
+		return request.getParameterValues(arg0);
 	}
 
 	public String getProtocol() {
 
-		return null;
+		return request.getProtocol();
 	}
 
 	public BufferedReader getReader() throws IOException {
 
-		return null;
+		return request.getReader();
 	}
 
 	public String getRealPath(String arg0) {
 
-		return null;
+		return request.getRealPath(arg0);
 	}
 
 	public String getRemoteAddr() {
 
-		return null;
+		return request.getRemoteAddr();
 	}
 
 	public String getRemoteHost() {
 
-		return null;
+		return request.getRemoteHost();
 	}
 
 	public int getRemotePort() {
 
-		return 0;
+		return request.getRemotePort();
 	}
 
 	public RequestDispatcher getRequestDispatcher(String arg0) {
 
-		return null;
+		return request.getRequestDispatcher(arg0);
 	}
 
 	public String getScheme() {
 
-		return null;
+		return request.getScheme();
 	}
 
 	public String getServerName() {
 
-		return null;
+		return request.getServerName();
 	}
 
 	public int getServerPort() {
 
-		return 0;
+		return request.getServerPort();
 	}
 
 	public boolean isSecure() {
 
-		return false;
+		return request.isSecure();
 	}
 
 	public void removeAttribute(String arg0) {
-
+		request.removeAttribute(arg0);
 	}
 
 	public void setAttribute(String arg0, Object arg1) {
-
+		request.setAttribute(arg0, arg1);
 	}
 
 	public void setCharacterEncoding(String arg0) throws UnsupportedEncodingException {
-
+		request.setCharacterEncoding(arg0);
 	}
 
 }
